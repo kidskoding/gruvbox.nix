@@ -209,6 +209,7 @@ installs the program itself.
 |-------------|----------------------------------------------------------------------|-------|
 | `alacritty` | `programs.alacritty.settings.colors` (primary, normal, bright)       | `programs.alacritty.enable` |
 | `bat`       | `programs.bat.config.theme = "gruvbox-dark"` or `"gruvbox-light"` (built in) | `programs.bat.enable` |
+| `bottom`    | `programs.bottom.settings.styles.colors`                             | `programs.bottom.enable` |
 | `btop`      | `programs.btop.settings.color_theme = "gruvbox_dark"` or `"gruvbox_light"` (built in) | `programs.btop.enable` |
 | `cava`      | `programs.cava.settings.color`: seven-stop gradient green to aqua    | `programs.cava.enable` |
 | `delta`     | `programs.delta.options`: bat syntax theme, minus/plus styles, line numbers, file and hunk headers | `programs.delta.enable` |
@@ -226,19 +227,28 @@ installs the program itself.
 | `helix`     | `programs.helix.settings.theme` from the six built-in gruvbox themes, flavor and contrast honored | `programs.helix.enable` |
 | `hyprland`  | `general.col.active_border` / `col.inactive_border`, `misc.background_color`, `decoration.shadow.color`, plus `$gruvbox_<key>` variables | `wayland.windowManager.hyprland.enable` |
 | `hyprlock`  | `$gruvbox_<key>` variables in `programs.hyprlock.settings`, see [notes](#hyprlock-and-waybar) | `programs.hyprlock.enable` |
+| `imv`       | `programs.imv.settings.options`: background, overlay colors          | `programs.imv.enable` |
+| `k9s`       | `programs.k9s.skins.gruvbox` (full skin) and `settings.k9s.ui.skin`  | `programs.k9s.enable` |
 | `kitty`     | `programs.kitty.settings`: colors, cursor, selection, borders, tabs  | `programs.kitty.enable` |
 | `lazygit`   | `programs.lazygit.settings.gui.theme`                                | `programs.lazygit.enable` |
 | `mako`      | `services.mako.settings`: background, text, border, progress, urgency sections | `services.mako.enable` |
+| `mpv`       | `programs.mpv.config`: osd and subtitle colors                        | `programs.mpv.enable` |
+| `neovim`    | adds `vimPlugins.gruvbox-nvim`, sets background, contrast and colorscheme in `extraLuaConfig` | `programs.neovim.enable` |
 | `niri`      | `programs.niri.settings.layout`: background, active and inactive border, shadow | [niri-flake](https://github.com/sodiboo/niri-flake) module imported |
 | `noctalia`  | `programs.noctalia-shell.colors` (material slots) and `settings.colorSchemes` | [noctalia](https://github.com/noctalia-dev/noctalia) module imported |
 | `qt`        | dark: qtct platform theme, kvantum style, Gruvbox-Dark-Brown kvantum theme. light: gtk platform theme | nothing (sets `qt.enable`) |
+| `qutebrowser` | `programs.qutebrowser.settings.colors`: completion, statusbar, tabs, hints, prompts, messages, downloads, context menu | `programs.qutebrowser.enable` |
+| `rio`       | `programs.rio.settings.colors`                                       | `programs.rio.enable` |
 | `rofi`      | `programs.rofi.theme`: global background/text/border, selected and urgent elements | `programs.rofi.enable` |
+| `sioyek`    | `programs.sioyek.config`: background, text, highlight, ui and status bar colors | `programs.sioyek.enable` |
 | `starship`  | `programs.starship.settings.palette = "gruvbox"` and `palettes.gruvbox` | `programs.starship.enable` |
 | `sway`      | `wayland.windowManager.sway.config.colors`: focused, focusedInactive, unfocused, urgent, placeholder, background | `wayland.windowManager.sway.enable` |
 | `swaylock`  | `programs.swaylock.settings`: ring, inside, key highlight, verify/wrong/clear states | `programs.swaylock.enable` |
 | `tmux`      | status bar, pane borders, messages, copy mode via `programs.tmux.extraConfig` | `programs.tmux.enable` |
+| `vscode`    | adds `vscode-extensions.jdinhlife.gruvbox` to the default profile and sets `workbench.colorTheme` by flavor and contrast | `programs.vscode.enable` |
 | `waybar`    | `@define-color gruvbox_<key>` for every palette key, prepended to `programs.waybar.style`, see [notes](#hyprlock-and-waybar) | `programs.waybar.enable` |
 | `wezterm`   | `programs.wezterm.colorSchemes.gruvbox` and `settings.color_scheme`  | `programs.wezterm.enable` |
+| `zathura`   | `programs.zathura.options`: page, statusbar, inputbar, completion, index, notification and recolor colors | `programs.zathura.enable` |
 | `zellij`    | `programs.zellij.settings.theme = "gruvbox-dark"` or `"gruvbox-light"` (built in) | `programs.zellij.enable` |
 
 ### NixOS modules
@@ -300,6 +310,13 @@ input-field { outer_color = $gruvbox_accent; inner_color = $gruvbox_bg1; font_co
 Every palette key exists as `@gruvbox_<key>` (waybar) and `$gruvbox_<key>`
 (hyprlock, hyprland). Hyprland also gets its borders, background and shadow set
 directly.
+
+#### vscode and neovim
+
+These two install a theme rather than generate one: the `jdinhlife.gruvbox`
+extension and the `gruvbox.nvim` plugin, both from nixpkgs. The module then
+selects the variant matching `flavor` and `contrast`. For neovim the setup
+lines go in with `mkBefore`, so a `colorscheme` call in your own lua wins.
 
 #### tmux
 
