@@ -46,6 +46,8 @@
                 programs.dircolors.enable = true;
                 programs.fastfetch.enable = true;
                 programs.starship.enable = true;
+                gtk.enable = true;
+                qt.enable = true;
                 assertions = [
                   {
                     assertion = config.programs.alacritty.settings.colors.primary.background == "#1d2021";
@@ -58,6 +60,18 @@
                   {
                     assertion = config.programs.starship.settings.palettes.gruvbox."bright-yellow" == "#fabd2f";
                     message = "starship palette";
+                  }
+                  {
+                    assertion = config.gtk.theme.name == "Gruvbox-Dark";
+                    message = "gtk theme";
+                  }
+                  {
+                    assertion = config.qt.kvantum.settings.General.theme == "Gruvbox-Dark-Brown";
+                    message = "kvantum theme";
+                  }
+                  {
+                    assertion = lib.hasInfix "gruvbox-dark-hard" config.xdg.configFile."doom/gruvbox.el".text;
+                    message = "doom theme name";
                   }
                 ];
               })
