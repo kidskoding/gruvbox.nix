@@ -181,6 +181,23 @@ gruvbox.enable = false;
 gruvbox.alacritty.enable = true;
 ```
 
+Every module also takes its own `flavor`, `contrast` and `accent`, defaulting
+to the global ones, so one program can differ from the rest:
+
+```nix
+gruvbox.enable = true;
+gruvbox.flavor = "dark";
+gruvbox.kitty.flavor = "light";  # light terminal, dark everything else
+gruvbox.niri.accent = "purple";  # purple borders, orange everywhere else
+```
+
+| option                       | default            |
+|------------------------------|--------------------|
+| `gruvbox.<module>.enable`    | `gruvbox.enable`   |
+| `gruvbox.<module>.flavor`    | `gruvbox.flavor`   |
+| `gruvbox.<module>.contrast`  | `gruvbox.contrast` |
+| `gruvbox.<module>.accent`    | `gruvbox.accent`   |
+
 ## Modules
 
 A module maps the palette onto one program's existing home-manager or NixOS
@@ -189,20 +206,32 @@ installs the program itself.
 
 ### home-manager modules
 
-| module            | sets                                                                 | needs |
-|-------------------|----------------------------------------------------------------------|-------|
-| `alacritty`       | `programs.alacritty.settings.colors` (primary, normal, bright)       | `programs.alacritty.enable` |
-| `dircolors`       | `programs.dircolors.settings` (LS_COLORS for ls, grep, fd, eza)      | `programs.dircolors.enable` |
-| `doom`            | `~/.config/doom/gruvbox.el`: `doom-theme` by flavor and contrast, mode-line and dired faces | doom emacs, see [notes](#doom) |
-| `eza`             | `home.sessionVariables.EZA_COLORS`                                   | nothing |
-| `fastfetch`       | `programs.fastfetch.settings.display.color` (keys, title, separator) | `programs.fastfetch.enable` |
-| `fish`            | `fish_color_*` and `fish_pager_color_*` via `interactiveShellInit`   | `programs.fish.enable` |
-| `gtk`             | `gtk.theme` Gruvbox-Dark/Light, `gtk.iconTheme` Gruvbox-Plus-Dark/Light, `gtk.colorScheme`, dconf `color-scheme` | nothing (sets `gtk.enable`) |
-| `niri`            | `programs.niri.settings.layout`: background, active and inactive border, shadow | [niri-flake](https://github.com/sodiboo/niri-flake) module imported |
-| `noctalia`        | `programs.noctalia-shell.colors` (material slots) and `settings.colorSchemes` | [noctalia](https://github.com/noctalia-dev/noctalia) module imported |
-| `qt`              | dark: qtct platform theme, kvantum style, Gruvbox-Dark-Brown kvantum theme. light: gtk platform theme | nothing (sets `qt.enable`) |
-| `starship`        | `programs.starship.settings.palette = "gruvbox"` and `palettes.gruvbox` | `programs.starship.enable` |
-| `zellij`          | `programs.zellij.settings.theme = "gruvbox-dark"` or `"gruvbox-light"` | `programs.zellij.enable` |
+| module      | sets                                                                 | needs |
+|-------------|----------------------------------------------------------------------|-------|
+| `alacritty` | `programs.alacritty.settings.colors` (primary, normal, bright)       | `programs.alacritty.enable` |
+| `bat`       | `programs.bat.config.theme = "gruvbox-dark"` or `"gruvbox-light"` (built in) | `programs.bat.enable` |
+| `btop`      | `programs.btop.settings.color_theme = "gruvbox_dark"` or `"gruvbox_light"` (built in) | `programs.btop.enable` |
+| `cava`      | `programs.cava.settings.color`: seven-stop gradient green to aqua    | `programs.cava.enable` |
+| `delta`     | `programs.delta.options`: bat syntax theme, minus/plus styles, line numbers, file and hunk headers | `programs.delta.enable` |
+| `dircolors` | `programs.dircolors.settings` (LS_COLORS for ls, grep, fd, eza)      | `programs.dircolors.enable` |
+| `doom`      | `~/.config/doom/gruvbox.el`: `doom-theme` by flavor and contrast, mode-line and dired faces | doom emacs, see [notes](#doom) |
+| `eza`       | `home.sessionVariables.EZA_COLORS`                                   | nothing |
+| `fastfetch` | `programs.fastfetch.settings.display.color` (keys, title, separator) | `programs.fastfetch.enable` |
+| `fish`      | `fish_color_*` and `fish_pager_color_*` via `interactiveShellInit`   | `programs.fish.enable` |
+| `foot`      | `programs.foot.settings.colors`                                      | `programs.foot.enable` |
+| `fzf`       | `programs.fzf.colors`                                                | `programs.fzf.enable` |
+| `ghostty`   | `programs.ghostty.settings`: background, foreground, cursor, selection, palette | `programs.ghostty.enable` |
+| `gtk`       | `gtk.theme` Gruvbox-Dark/Light, `gtk.iconTheme` Gruvbox-Plus-Dark/Light, `gtk.colorScheme`, dconf `color-scheme` | nothing (sets `gtk.enable`) |
+| `helix`     | `programs.helix.settings.theme` from the six built-in gruvbox themes, flavor and contrast honored | `programs.helix.enable` |
+| `kitty`     | `programs.kitty.settings`: colors, cursor, selection, borders, tabs  | `programs.kitty.enable` |
+| `lazygit`   | `programs.lazygit.settings.gui.theme`                                | `programs.lazygit.enable` |
+| `niri`      | `programs.niri.settings.layout`: background, active and inactive border, shadow | [niri-flake](https://github.com/sodiboo/niri-flake) module imported |
+| `noctalia`  | `programs.noctalia-shell.colors` (material slots) and `settings.colorSchemes` | [noctalia](https://github.com/noctalia-dev/noctalia) module imported |
+| `qt`        | dark: qtct platform theme, kvantum style, Gruvbox-Dark-Brown kvantum theme. light: gtk platform theme | nothing (sets `qt.enable`) |
+| `starship`  | `programs.starship.settings.palette = "gruvbox"` and `palettes.gruvbox` | `programs.starship.enable` |
+| `tmux`      | status bar, pane borders, messages, copy mode via `programs.tmux.extraConfig` | `programs.tmux.enable` |
+| `wezterm`   | `programs.wezterm.colorSchemes.gruvbox` and `settings.color_scheme`  | `programs.wezterm.enable` |
+| `zellij`    | `programs.zellij.settings.theme = "gruvbox-dark"` or `"gruvbox-light"` (built in) | `programs.zellij.enable` |
 
 ### NixOS modules
 
@@ -230,10 +259,25 @@ Remove any `(setq doom-theme ...)` of your own. `gruvbox.el` picks
 `contrast`, and sets `mode-line` to `bg1`, `mode-line-inactive` to `bg`, and
 dired buffers to `bg0_h`.
 
-#### zellij
+#### zellij, bat, btop
 
-Zellij ships `gruvbox-dark` and `gruvbox-light` built in, and the module points
-at those. `contrast` has no effect on zellij.
+These ship gruvbox dark and light themes of their own, and the modules point at
+those by name. `contrast` has no effect on them.
+
+#### helix
+
+Helix ships all six variants, so flavor and contrast both apply:
+
+| flavor | hard                 | medium          | soft                 |
+|--------|----------------------|-----------------|----------------------|
+| dark   | `gruvbox_dark_hard`  | `gruvbox`       | `gruvbox_dark_soft`  |
+| light  | `gruvbox_light_hard` | `gruvbox_light` | `gruvbox_light_soft` |
+
+#### tmux
+
+tmux has no color options in home-manager, so the module writes `set -g` lines
+into `programs.tmux.extraConfig` with `mkBefore`. tmux keeps the last value it
+reads, so any `set -g status-style` in your own `extraConfig` wins.
 
 #### qt
 
@@ -405,23 +449,24 @@ gruvbox.starship.enable = false;
 
 ## Adding a module
 
-One file per program under `modules/home-manager/` or `modules/nixos/`. The
-shape is always the same:
+One file per program under `modules/home-manager/` or `modules/nixos/`. Files
+are picked up automatically; there is nothing to register. The shape is always
+the same:
 
 ```nix
 # modules/home-manager/foo.nix
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.foo;
-  p = config.gruvbox.palette;
+  p = gl.paletteOf cfg;
 in
 {
-  options.gruvbox.foo.enable =
-    lib.mkEnableOption "gruvbox for foo" // { default = config.gruvbox.enable; };
+  options.gruvbox.foo = gl.mkModule "foo";
 
   config = lib.mkIf cfg.enable {
-    programs.foo.settings.colors = lib.mapAttrsRecursive (_: lib.mkDefault) {
+    programs.foo.settings.colors = gl.mkDefaults {
       background = p.bg;
       foreground = p.fg;
       accent = p.accent;
@@ -430,41 +475,56 @@ in
 }
 ```
 
+`modules/lib.nix` gives every module the same toolkit:
+
+| helper               | what |
+|----------------------|------|
+| `gl.mkModule name`   | the `enable`, `flavor`, `contrast`, `accent` options, defaulting to the globals |
+| `gl.paletteOf cfg`   | the palette for this module's own flavor, contrast and accent |
+| `gl.ansiOf cfg`      | same, as `R;G;B` strings |
+| `gl.term16 p`        | the 16 ANSI colors in order, for terminals |
+| `gl.mkDefaults attrs`| `lib.mkDefault` on every leaf |
+| `gl.fg rgb`          | `38;2;R;G;B` |
+| `gl.noHash hex`      | `#rrggbb` to `rrggbb` |
+| `gl.hasOpt path`     | whether an option path exists, for programs from other flakes |
+
 Rules, all of which the existing modules follow:
 
-1. `gruvbox.<name>.enable` is the only option, and defaults to the global switch.
-2. Set values with `lib.mkDefault` on every leaf. Not on a whole attrset: the
-   module system resolves priority per option, so a default on the parent is
-   all-or-nothing against a user definition. `lib.mapAttrsRecursive (_: lib.mkDefault)`
-   does the leaves for you.
+1. `gl.mkModule` declares the options; read `cfg.flavor` / `cfg.contrast` and
+   `gl.paletteOf cfg`, never `config.gruvbox.palette`, so per-module overrides
+   work.
+2. Set values with `lib.mkDefault` on every leaf, which `gl.mkDefaults` does.
+   Not on a whole attrset: the module system resolves priority per option, so a
+   default on the parent is all-or-nothing against a user definition.
 3. If home-manager already defines defaults for the same keys with `mkDefault`
-   (dircolors does), use `lib.mkOverride 900` instead so yours win and the
-   user's still win over yours.
+   (dircolors does), use `lib.mkOverride 900` so yours win and the user's still
+   win over yours.
 4. Only touch options the program's own module declares. Never create config
    files by hand when `programs.foo.settings` exists.
 5. If the options come from another flake, guard the body with
-   `lib.optionalAttrs (options.programs ? foo)` and take `options` as a module
-   argument. `lib.mkIf false` is not enough: it still declares the option path
-   and fails evaluation when the program's module is absent.
-6. Use `bg`, `fg` and `accent` for the program's main background, foreground and
-   highlight so `contrast` and `accent` apply. Use the named colors for
+   `lib.optionalAttrs (gl.hasOpt [ "programs" "foo" ])`. `lib.mkIf false` is
+   not enough: it still declares the option path and fails evaluation when the
+   program's module is absent.
+6. If the program ships its own gruvbox theme, point at it by name (zellij,
+   bat, btop, helix) instead of generating one.
+7. Use `bg`, `fg` and `accent` for the program's main background, foreground
+   and highlight so `contrast` and `accent` apply. Use the named colors for
    everything else.
-7. Add the file to `modules/home-manager/default.nix` (or `modules/nixos/default.nix`),
-   enable the program in the `hm` check in `flake.nix`, and add one assertion
-   there for a value the module sets.
-8. `nix flake check`.
+8. Enable the program in `checks/hm.nix` and add one `[ actual expected ]`
+   pair to `expect` in `flake.nix`.
+9. `nix flake check`.
 
 Commit as `feat(foo): what it sets`.
 
 ## Checks
 
-`nix flake check` runs three things:
+`nix flake check` runs two checks, both evaluation only. Nothing is built, so
+adding modules never makes CI slower.
 
 | check     | what |
 |-----------|------|
 | `palette` | unit test for the palette table and `hexToRgb` (`lib/test.nix`) |
-| `hm`      | builds a home-manager configuration with `gruvbox.enable = true` and every themable program enabled, with assertions on the generated values |
-| `nixos`   | evaluates a NixOS configuration with the NixOS module and asserts the palette |
+| `modules` | evaluates a home-manager configuration (`checks/hm.nix`) with every themable program enabled and per-module overrides set, plus the NixOS module, and compares generated values against `expect` in `flake.nix` |
 
 Modules whose options come from external flakes (niri, noctalia,
 noctalia-greeter) are no-ops inside these checks. They are verified by building
