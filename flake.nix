@@ -85,6 +85,15 @@
             [ programs.sioyek.config.ui_selected_background_color "0.980392 0.741176 0.184314" ]
             [ programs.imv.settings.options.background "1d2021" ]
             [ programs.rio.settings.colors.tabs-active "#fabd2f" ]
+            [ programs.gh-dash.settings.theme.colors.border.primary "#fabd2f" ]
+            [ (lib.hasInfix "push_gauge_bg: Some(\"#fabd2f\")" programs.gitui.theme) true ]
+            [ programs.lsd.colors.user "#fabd2f" ]
+            [ (lib.hasInfix "shape_matching_brackets: \"#fabd2f underline\"" programs.nushell.extraConfig) true ]
+            [ (lib.hasInfix "matched:#fabd2f" (builtins.head programs.skim.defaultOptions)) true ]
+            [ (builtins.head programs.spotify-player.themes).component_style.selection.bg "#fabd2f" ]
+            [ programs.zsh.syntaxHighlighting.styles.command "fg=#b8bb26" ]
+            [ programs.vivid.activeTheme "gruvbox-dark-hard" ]
+            [ programs.mangohud.settings.text_color "ebdbb2" ]
             [ nixos.gruvbox.palette.accent "#8ec07c" ]
           ];
           bad = builtins.filter (e: builtins.elemAt e 0 != builtins.elemAt e 1) expect;

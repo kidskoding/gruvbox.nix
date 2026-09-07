@@ -56,4 +56,14 @@
   programs.sioyek.enable = true;
   programs.imv.enable = true;
   programs.rio.enable = true;
+
+  programs.gh-dash.enable = true;
+  programs.gitui.enable = true;
+  programs.lsd.enable = true;
+  programs.nushell.enable = true;
+  programs.skim.enable = true;
+  programs.spotify-player.enable = true;
+  programs.zsh = { enable = true; syntaxHighlighting.enable = true; };
+  programs.vivid.enable = true;
+  programs.mangohud.enable = true;
 }
