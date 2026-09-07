@@ -35,7 +35,6 @@ gruvbox.enable = true;
 - [Overriding](#overriding)
 - [Adding a module](#adding-a-module)
 - [Checks](#checks)
-- [FAQ](#faq)
 - [License](#license)
 
 ## Getting started
@@ -532,39 +531,6 @@ a real system that imports those flakes.
 
 CI runs the same command on every push and pull request, and weekly to catch
 nixpkgs and home-manager drift.
-
-## FAQ
-
-**Why generate everything instead of fetching upstream gruvbox ports like
-catppuccin/nix does?**
-Catppuccin maintains an official port for nearly every program, so their flake
-can pin and import those files. gruvbox has no such organization: ports are
-scattered, unmaintained, and disagree with each other. Generating from one
-palette in Nix means one source of truth, `contrast` and `accent` work
-everywhere, and there is nothing to keep in sync.
-
-**Does importing the flake change anything before I set `gruvbox.enable`?**
-No. Every module is `mkIf cfg.enable`, and `cfg.enable` defaults to
-`gruvbox.enable`, which defaults to `false`.
-
-**Why did my terminal not change contrast?**
-Programs with a built-in theme name and no per-color options (zellij) can only
-pick dark or light. Programs with full color options (alacritty) follow
-`contrast`.
-
-**Can I use a different accent per program?**
-Set the value directly; it overrides the module's default:
-`programs.niri.settings.layout.border.active.color = config.gruvbox.palette.aqua;`
-
-**A program I use has no module.**
-Read `config.gruvbox.palette` in your own config
-(see [above](#using-the-palette-in-your-own-config)), or
-[add a module](#adding-a-module) and open a pull request.
-
-**Which nixpkgs and home-manager versions work?**
-The flake is developed and checked against `nixos-unstable` and home-manager
-master. Modules only use long-stable options, so release branches should work,
-but they are not in CI.
 
 ## License
 
