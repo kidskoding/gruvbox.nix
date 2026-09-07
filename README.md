@@ -214,21 +214,30 @@ installs the program itself.
 | `delta`     | `programs.delta.options`: bat syntax theme, minus/plus styles, line numbers, file and hunk headers | `programs.delta.enable` |
 | `dircolors` | `programs.dircolors.settings` (LS_COLORS for ls, grep, fd, eza)      | `programs.dircolors.enable` |
 | `doom`      | `~/.config/doom/gruvbox.el`: `doom-theme` by flavor and contrast, mode-line and dired faces | doom emacs, see [notes](#doom) |
+| `dunst`     | `services.dunst.settings`: frame color, low/normal/critical urgency colors | `services.dunst.enable` |
 | `eza`       | `home.sessionVariables.EZA_COLORS`                                   | nothing |
 | `fastfetch` | `programs.fastfetch.settings.display.color` (keys, title, separator) | `programs.fastfetch.enable` |
 | `fish`      | `fish_color_*` and `fish_pager_color_*` via `interactiveShellInit`   | `programs.fish.enable` |
 | `foot`      | `programs.foot.settings.colors`                                      | `programs.foot.enable` |
+| `fuzzel`    | `programs.fuzzel.settings.colors`                                    | `programs.fuzzel.enable` |
 | `fzf`       | `programs.fzf.colors`                                                | `programs.fzf.enable` |
 | `ghostty`   | `programs.ghostty.settings`: background, foreground, cursor, selection, palette | `programs.ghostty.enable` |
 | `gtk`       | `gtk.theme` Gruvbox-Dark/Light, `gtk.iconTheme` Gruvbox-Plus-Dark/Light, `gtk.colorScheme`, dconf `color-scheme` | nothing (sets `gtk.enable`) |
 | `helix`     | `programs.helix.settings.theme` from the six built-in gruvbox themes, flavor and contrast honored | `programs.helix.enable` |
+| `hyprland`  | `general.col.active_border` / `col.inactive_border`, `misc.background_color`, `decoration.shadow.color`, plus `$gruvbox_<key>` variables | `wayland.windowManager.hyprland.enable` |
+| `hyprlock`  | `$gruvbox_<key>` variables in `programs.hyprlock.settings`, see [notes](#hyprlock-and-waybar) | `programs.hyprlock.enable` |
 | `kitty`     | `programs.kitty.settings`: colors, cursor, selection, borders, tabs  | `programs.kitty.enable` |
 | `lazygit`   | `programs.lazygit.settings.gui.theme`                                | `programs.lazygit.enable` |
+| `mako`      | `services.mako.settings`: background, text, border, progress, urgency sections | `services.mako.enable` |
 | `niri`      | `programs.niri.settings.layout`: background, active and inactive border, shadow | [niri-flake](https://github.com/sodiboo/niri-flake) module imported |
 | `noctalia`  | `programs.noctalia-shell.colors` (material slots) and `settings.colorSchemes` | [noctalia](https://github.com/noctalia-dev/noctalia) module imported |
 | `qt`        | dark: qtct platform theme, kvantum style, Gruvbox-Dark-Brown kvantum theme. light: gtk platform theme | nothing (sets `qt.enable`) |
+| `rofi`      | `programs.rofi.theme`: global background/text/border, selected and urgent elements | `programs.rofi.enable` |
 | `starship`  | `programs.starship.settings.palette = "gruvbox"` and `palettes.gruvbox` | `programs.starship.enable` |
+| `sway`      | `wayland.windowManager.sway.config.colors`: focused, focusedInactive, unfocused, urgent, placeholder, background | `wayland.windowManager.sway.enable` |
+| `swaylock`  | `programs.swaylock.settings`: ring, inside, key highlight, verify/wrong/clear states | `programs.swaylock.enable` |
 | `tmux`      | status bar, pane borders, messages, copy mode via `programs.tmux.extraConfig` | `programs.tmux.enable` |
+| `waybar`    | `@define-color gruvbox_<key>` for every palette key, prepended to `programs.waybar.style`, see [notes](#hyprlock-and-waybar) | `programs.waybar.enable` |
 | `wezterm`   | `programs.wezterm.colorSchemes.gruvbox` and `settings.color_scheme`  | `programs.wezterm.enable` |
 | `zellij`    | `programs.zellij.settings.theme = "gruvbox-dark"` or `"gruvbox-light"` (built in) | `programs.zellij.enable` |
 
@@ -271,6 +280,26 @@ Helix ships all six variants, so flavor and contrast both apply:
 |--------|----------------------|-----------------|----------------------|
 | dark   | `gruvbox_dark_hard`  | `gruvbox`       | `gruvbox_dark_soft`  |
 | light  | `gruvbox_light_hard` | `gruvbox_light` | `gruvbox_light_soft` |
+
+#### hyprlock and waybar
+
+Both are styled by config you write yourself (hyprlock's elements are lists,
+waybar's style is free-form CSS), so the modules define named colors instead of
+overwriting your layout:
+
+```css
+/* waybar style.css */
+#workspaces button.active { color: @gruvbox_accent; background: @gruvbox_bg1; }
+```
+
+```
+# hyprlock.conf via programs.hyprlock.settings
+input-field { outer_color = $gruvbox_accent; inner_color = $gruvbox_bg1; font_color = $gruvbox_fg; }
+```
+
+Every palette key exists as `@gruvbox_<key>` (waybar) and `$gruvbox_<key>`
+(hyprlock, hyprland). Hyprland also gets its borders, background and shadow set
+directly.
 
 #### tmux
 
