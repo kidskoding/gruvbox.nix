@@ -57,6 +57,14 @@
             [ (builtins.head programs.ghostty.settings.palette) "0=#1d2021" ]
             [ programs.wezterm.settings.color_scheme "gruvbox" ]
             [ (builtins.head programs.wezterm.colorSchemes.gruvbox.brights) "#928374" ]
+            [ programs.fzf.colors.bg "#1d2021" ]
+            [ (lib.hasInfix "pane-active-border-style \"fg=#fabd2f\"" programs.tmux.extraConfig) true ]
+            [ (builtins.head programs.lazygit.settings.gui.theme.activeBorderColor) "#fabd2f" ]
+            [ programs.delta.options.syntax-theme "gruvbox-dark" ]
+            [ programs.btop.settings.color_theme "gruvbox_dark" ]
+            [ programs.bat.config.theme "gruvbox-dark" ]
+            [ programs.helix.settings.theme "gruvbox_light_hard" ]
+            [ programs.cava.settings.color.gradient_color_1 "'#b8bb26'" ]
             [ nixos.gruvbox.palette.accent "#8ec07c" ]
           ];
           bad = builtins.filter (e: builtins.elemAt e 0 != builtins.elemAt e 1) expect;
