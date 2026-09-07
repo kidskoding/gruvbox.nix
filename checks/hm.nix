@@ -66,4 +66,19 @@
   programs.zsh = { enable = true; syntaxHighlighting.enable = true; };
   programs.vivid.enable = true;
   programs.mangohud.enable = true;
+
+  services.polybar = { enable = true; script = ""; };
+  services.swaync.enable = true;
+  programs.tofi.enable = true;
+  programs.wlogout.enable = true;
+  programs.wleave.enable = true;
+  programs.atuin.enable = true;
+  programs.micro.enable = true;
+  programs.halloy.enable = true;
+  programs.television.enable = true;
+  programs.aerc.enable = true;
+  programs.opencode.enable = true;
+  programs.broot.enable = true;
+  programs.yazi.enable = true;
+  programs.zed-editor.enable = true;
 }
