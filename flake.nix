@@ -65,6 +65,16 @@
             [ programs.bat.config.theme "gruvbox-dark" ]
             [ programs.helix.settings.theme "gruvbox_light_hard" ]
             [ programs.cava.settings.color.gradient_color_1 "'#b8bb26'" ]
+            [ (lib.hasInfix "@define-color gruvbox_accent #fabd2f;" programs.waybar.style) true ]
+            [ programs.rofi.theme."element selected normal".background-color.value "#fabd2f" ]
+            [ programs.fuzzel.settings.colors.background "1d2021ff" ]
+            [ services.dunst.settings.urgency_critical.data.frame_color "#fb4934" ]
+            [ services.mako.settings.border-color "#fabd2f" ]
+            [ wayland.windowManager.hyprland.settings.general."col.active_border" "rgb(fabd2f)" ]
+            [ wayland.windowManager.hyprland.settings."$gruvbox_bg" "rgb(1d2021)" ]
+            [ wayland.windowManager.sway.config.colors.focused.border "#fabd2f" ]
+            [ programs.hyprlock.settings."$gruvbox_accent" "rgb(fabd2f)" ]
+            [ programs.swaylock.settings.ring-color "fabd2f" ]
             [ nixos.gruvbox.palette.accent "#8ec07c" ]
           ];
           bad = builtins.filter (e: builtins.elemAt e 0 != builtins.elemAt e 1) expect;

@@ -1,7 +1,7 @@
 {
   home.username = "check";
   home.homeDirectory = "/home/check";
-  home.stateVersion = "25.05";
+  home.stateVersion = "26.05";
 
   gruvbox.enable = true;
   gruvbox.contrast = "hard";
@@ -33,4 +33,14 @@
   programs.bat.enable = true;
   programs.helix.enable = true;
   programs.cava.enable = true;
+
+  programs.waybar.enable = true;
+  programs.rofi.enable = true;
+  programs.fuzzel.enable = true;
+  services.dunst.enable = true;
+  services.mako.enable = true;
+  wayland.windowManager.hyprland.enable = true;
+  wayland.windowManager.sway.enable = true;
+  programs.hyprlock.enable = true;
+  programs.swaylock.enable = true;
 }
