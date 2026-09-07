@@ -40,6 +40,26 @@
                 gruvbox.enable = true;
                 gruvbox.contrast = "hard";
                 gruvbox.accent = "yellow";
+                programs.alacritty.enable = true;
+                programs.zellij.enable = true;
+                programs.fish.enable = true;
+                programs.dircolors.enable = true;
+                programs.fastfetch.enable = true;
+                programs.starship.enable = true;
+                assertions = [
+                  {
+                    assertion = config.programs.alacritty.settings.colors.primary.background == "#1d2021";
+                    message = "alacritty bg should follow contrast=hard";
+                  }
+                  {
+                    assertion = config.programs.zellij.settings.theme == "gruvbox-dark";
+                    message = "zellij theme name";
+                  }
+                  {
+                    assertion = config.programs.starship.settings.palettes.gruvbox."bright-yellow" == "#fabd2f";
+                    message = "starship palette";
+                  }
+                ];
               })
             ];
           }).activationPackage;
