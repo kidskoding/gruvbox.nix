@@ -1,17 +1,7 @@
 {
-  imports = [
-    ../palette.nix
-    ./alacritty.nix
-    ./dircolors.nix
-    ./doom.nix
-    ./eza.nix
-    ./fastfetch.nix
-    ./fish.nix
-    ./gtk.nix
-    ./niri.nix
-    ./noctalia.nix
-    ./qt.nix
-    ./starship.nix
-    ./zellij.nix
-  ];
+  _class = "homeManager";
+
+  imports = [ ../palette.nix ] ++ map (f: ./. + "/${f}") (builtins.filter
+    (f: f != "default.nix" && builtins.match ".*\\.nix" f != null)
+    (builtins.attrNames (builtins.readDir ./.)));
 }

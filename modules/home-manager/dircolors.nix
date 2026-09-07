@@ -1,13 +1,13 @@
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.dircolors;
-  a = config.gruvbox.ansi;
-  fg = c: "38;2;${c}";
+  a = gl.ansiOf cfg;
+  inherit (gl) fg;
 in
 {
-  options.gruvbox.dircolors.enable =
-    lib.mkEnableOption "gruvbox for dircolors (LS_COLORS)" // { default = config.gruvbox.enable; };
+  options.gruvbox.dircolors = gl.mkModule "dircolors";
 
   config = lib.mkIf cfg.enable {
     # home-manager ships its own mkDefault for these keys; 900 beats that, plain user config still wins

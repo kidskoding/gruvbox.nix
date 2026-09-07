@@ -1,20 +1,20 @@
 { config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.niri;
-  p = config.gruvbox.palette;
+  p = gl.paletteOf cfg;
 in
 {
-  options.gruvbox.niri.enable =
-    lib.mkEnableOption "gruvbox for niri (background, borders, shadow)" // { default = config.gruvbox.enable; };
+  options.gruvbox.niri = gl.mkModule "niri";
 
   # no-op unless niri-flake's home-manager module is imported
-  config = lib.mkIf cfg.enable (lib.optionalAttrs (options.programs ? niri) {
-    programs.niri.settings.layout = {
-      background-color = lib.mkDefault p.bg;
-      border.active.color = lib.mkDefault p.accent;
-      border.inactive.color = lib.mkDefault p.bg1;
-      shadow.color = lib.mkDefault "${p.bg0_h}ee";
+  config = lib.mkIf cfg.enable (lib.optionalAttrs (gl.hasOpt [ "programs" "niri" ]) {
+    programs.niri.settings.layout = gl.mkDefaults {
+      background-color = p.bg;
+      border.active.color = p.accent;
+      border.inactive.color = p.bg1;
+      shadow.color = "${p.bg0_h}ee";
     };
   });
 }

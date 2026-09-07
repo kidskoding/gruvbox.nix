@@ -1,18 +1,18 @@
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.fastfetch;
-  a = config.gruvbox.ansi;
+  a = gl.ansiOf cfg;
 in
 {
-  options.gruvbox.fastfetch.enable =
-    lib.mkEnableOption "gruvbox for fastfetch (key/title/separator colors)" // { default = config.gruvbox.enable; };
+  options.gruvbox.fastfetch = gl.mkModule "fastfetch";
 
   config = lib.mkIf cfg.enable {
-    programs.fastfetch.settings.display.color = {
-      keys = lib.mkDefault "38;2;${a.accent}";
-      title = lib.mkDefault "38;2;${a.accent}";
-      separator = lib.mkDefault "38;2;${a.gray}";
+    programs.fastfetch.settings.display.color = gl.mkDefaults {
+      keys = gl.fg a.accent;
+      title = gl.fg a.accent;
+      separator = gl.fg a.gray;
     };
   };
 }

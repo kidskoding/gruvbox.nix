@@ -1,12 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, options, pkgs, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.qt;
-  dark = config.gruvbox.flavor == "dark";
+  dark = cfg.flavor == "dark";
 in
 {
-  options.gruvbox.qt.enable =
-    lib.mkEnableOption "gruvbox for qt (kvantum on dark, gtk platform theme on light)" // { default = config.gruvbox.enable; };
+  options.gruvbox.qt = gl.mkModule "qt";
 
   # nixpkgs has no light kvantum theme, so light follows gtk instead
   config = lib.mkIf cfg.enable (lib.mkMerge [

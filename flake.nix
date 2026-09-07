@@ -40,6 +40,8 @@
                 gruvbox.enable = true;
                 gruvbox.contrast = "hard";
                 gruvbox.accent = "yellow";
+                gruvbox.alacritty.accent = "aqua";
+                gruvbox.zellij.flavor = "light";
                 programs.alacritty.enable = true;
                 programs.zellij.enable = true;
                 programs.fish.enable = true;
@@ -54,7 +56,7 @@
                     message = "alacritty bg should follow contrast=hard";
                   }
                   {
-                    assertion = config.programs.zellij.settings.theme == "gruvbox-dark";
+                    assertion = config.programs.zellij.settings.theme == "gruvbox-light";
                     message = "zellij theme name";
                   }
                   {

@@ -1,11 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.fish;
-  p = config.gruvbox.palette;
-
-  # fish takes bare rrggbb; a leading # would start a comment
-  noHash = builtins.replaceStrings [ "#" ] [ "" ];
+  p = gl.paletteOf cfg;
 
   colors = {
     fish_color_normal = p.fg;
@@ -36,11 +34,11 @@ let
   };
 in
 {
-  options.gruvbox.fish.enable =
-    lib.mkEnableOption "gruvbox for fish" // { default = config.gruvbox.enable; };
+  options.gruvbox.fish = gl.mkModule "fish";
 
+  # fish takes bare rrggbb; a leading # would start a comment
   config = lib.mkIf cfg.enable {
     programs.fish.interactiveShellInit = lib.mkBefore
-      (lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "set -g ${k} ${noHash v}") colors));
+      (lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "set -g ${k} ${gl.noHash v}") colors));
   };
 }

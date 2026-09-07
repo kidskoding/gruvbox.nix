@@ -1,18 +1,18 @@
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.starship;
-  p = config.gruvbox.palette;
+  p = gl.paletteOf cfg;
 in
 {
-  options.gruvbox.starship.enable =
-    lib.mkEnableOption "gruvbox for starship" // { default = config.gruvbox.enable; };
+  options.gruvbox.starship = gl.mkModule "starship";
 
   # style names like "bold yellow" resolve through this palette
   config = lib.mkIf cfg.enable {
     programs.starship.settings = {
       palette = lib.mkDefault "gruvbox";
-      palettes.gruvbox = lib.mapAttrs (_: lib.mkDefault) {
+      palettes.gruvbox = gl.mkDefaults {
         black = p.bg; red = p.neutralRed; green = p.neutralGreen; yellow = p.neutralYellow;
         blue = p.neutralBlue; purple = p.neutralPurple; cyan = p.neutralAqua; white = p.fg4;
         "bright-black" = p.gray; "bright-red" = p.red; "bright-green" = p.green; "bright-yellow" = p.yellow;

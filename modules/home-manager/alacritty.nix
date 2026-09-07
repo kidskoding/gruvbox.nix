@@ -1,15 +1,15 @@
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.alacritty;
-  p = config.gruvbox.palette;
+  p = gl.paletteOf cfg;
 in
 {
-  options.gruvbox.alacritty.enable =
-    lib.mkEnableOption "gruvbox for alacritty" // { default = config.gruvbox.enable; };
+  options.gruvbox.alacritty = gl.mkModule "alacritty";
 
   config = lib.mkIf cfg.enable {
-    programs.alacritty.settings.colors = lib.mapAttrsRecursive (_: lib.mkDefault) {
+    programs.alacritty.settings.colors = gl.mkDefaults {
       primary = { background = p.bg; foreground = p.fg; };
       normal = {
         black = p.bg; red = p.neutralRed; green = p.neutralGreen; yellow = p.neutralYellow;

@@ -1,9 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.eza;
-  a = config.gruvbox.ansi;
-  fg = c: "38;2;${c}";
+  a = gl.ansiOf cfg;
+  inherit (gl) fg;
 
   # eza layers these on top of LS_COLORS
   colors = {
@@ -28,8 +29,7 @@ let
   };
 in
 {
-  options.gruvbox.eza.enable =
-    lib.mkEnableOption "gruvbox for eza (EZA_COLORS)" // { default = config.gruvbox.enable; };
+  options.gruvbox.eza = gl.mkModule "eza";
 
   config = lib.mkIf cfg.enable {
     home.sessionVariables.EZA_COLORS = lib.mkDefault

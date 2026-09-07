@@ -1,19 +1,19 @@
 { config, lib, options, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.noctalia-greeter;
-  p = config.gruvbox.palette;
+  p = gl.paletteOf cfg;
 in
 {
-  options.gruvbox.noctalia-greeter.enable =
-    lib.mkEnableOption "gruvbox for noctalia-greeter" // { default = config.gruvbox.enable; };
+  options.gruvbox.noctalia-greeter = gl.mkModule "noctalia-greeter";
 
   # no-op unless noctalia-greeter's nixos module is imported
-  config = lib.mkIf cfg.enable (lib.optionalAttrs (options.programs ? noctalia-greeter) {
-    programs.noctalia-greeter.settings.appearance = {
-      scheme = lib.mkDefault "Synced";
-      theme_mode = lib.mkDefault config.gruvbox.flavor;
-      palette = lib.mapAttrs (_: lib.mkDefault) {
+  config = lib.mkIf cfg.enable (lib.optionalAttrs (gl.hasOpt [ "programs" "noctalia-greeter" ]) {
+    programs.noctalia-greeter.settings.appearance = gl.mkDefaults {
+      scheme = "Synced";
+      theme_mode = cfg.flavor;
+      palette = {
         primary = p.accent;          on_primary = p.bg;
         secondary = p.purple;        on_secondary = p.bg;
         tertiary = p.green;          on_tertiary = p.bg;

@@ -1,18 +1,18 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, options, pkgs, ... }:
 
 let
+  gl = import ../lib.nix { inherit config lib options; };
   cfg = config.gruvbox.gtk;
-  dark = config.gruvbox.flavor == "dark";
+  dark = cfg.flavor == "dark";
   polarity = if dark then "Dark" else "Light";
 in
 {
-  options.gruvbox.gtk.enable =
-    lib.mkEnableOption "gruvbox for gtk (theme, icons, color scheme)" // { default = config.gruvbox.enable; };
+  options.gruvbox.gtk = gl.mkModule "gtk";
 
   config = lib.mkIf cfg.enable {
     gtk = {
       enable = lib.mkDefault true;
-      colorScheme = lib.mkDefault config.gruvbox.flavor;
+      colorScheme = lib.mkDefault cfg.flavor;
       theme = {
         name = lib.mkDefault "Gruvbox-${polarity}";
         package = lib.mkDefault pkgs.gruvbox-gtk-theme;
