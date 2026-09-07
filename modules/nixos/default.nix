@@ -1,0 +1,5 @@
+{
+  imports = [
+    ../palette.nix
+  ];
+}

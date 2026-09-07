@@ -27,6 +27,42 @@
           palette = pkgs.runCommand "gruvbox-palette-check" { } ''
             echo ${import ./lib/test.nix} > $out
           '';
+
+          # niri and noctalia modules are no-ops here: their option trees are not imported
+          hm = (home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = [
+              self.homeModules.default
+              ({ config, lib, ... }: {
+                home.username = "check";
+                home.homeDirectory = "/home/check";
+                home.stateVersion = "25.05";
+                gruvbox.enable = true;
+                gruvbox.contrast = "hard";
+                gruvbox.accent = "yellow";
+              })
+            ];
+          }).activationPackage;
+
+          # eval only: building a toplevel would pull a whole system closure
+          nixos =
+            let
+              cfg = (nixpkgs.lib.nixosSystem {
+                inherit system;
+                modules = [
+                  self.nixosModules.default
+                  {
+                    gruvbox.enable = true;
+                    gruvbox.accent = "aqua";
+                    boot.loader.grub.enable = false;
+                    fileSystems."/".device = "/dev/null";
+                    system.stateVersion = "25.05";
+                  }
+                ];
+              }).config;
+            in
+            assert cfg.gruvbox.palette.accent == "#8ec07c";
+            pkgs.runCommand "gruvbox-nixos-check" { } "echo '${cfg.gruvbox.palette.accent}' > $out";
         });
     };
 }
