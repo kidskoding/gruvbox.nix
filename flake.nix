@@ -49,6 +49,14 @@
             [ gtk.iconTheme.name "Gruvbox-Plus-Dark" ]
             [ qt.kvantum.settings.General.theme "Gruvbox-Dark-Brown" ]
             [ (lib.hasInfix "gruvbox-dark-hard" xdg.configFile."doom/gruvbox.el".text) true ]
+            [ programs.kitty.settings.background "#1d2021" ]
+            [ programs.kitty.settings.active_border_color "#d3869b" ]
+            [ programs.foot.settings.colors.background "1d2021" ]
+            [ programs.foot.settings.colors.bright1 "fb4934" ]
+            [ (builtins.head programs.ghostty.settings.background) "#1d2021" ]
+            [ (builtins.head programs.ghostty.settings.palette) "0=#1d2021" ]
+            [ programs.wezterm.settings.color_scheme "gruvbox" ]
+            [ (builtins.head programs.wezterm.colorSchemes.gruvbox.brights) "#928374" ]
             [ nixos.gruvbox.palette.accent "#8ec07c" ]
           ];
           bad = builtins.filter (e: builtins.elemAt e 0 != builtins.elemAt e 1) expect;
