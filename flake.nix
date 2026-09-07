@@ -75,6 +75,16 @@
             [ wayland.windowManager.sway.config.colors.focused.border "#fabd2f" ]
             [ programs.hyprlock.settings."$gruvbox_accent" "rgb(fabd2f)" ]
             [ programs.swaylock.settings.ring-color "fabd2f" ]
+            [ programs.vscode.profiles.default.userSettings."workbench.colorTheme" "Gruvbox Dark Hard" ]
+            [ (lib.hasInfix "contrast = \"hard\"" programs.neovim.extraLuaConfig) true ]
+            [ programs.zathura.options.highlight-color "#fabd2f" ]
+            [ programs.mpv.config.osd-color "#ebdbb2" ]
+            [ programs.k9s.skins.gruvbox.k9s.body.logoColor "#fabd2f" ]
+            [ programs.bottom.settings.styles.colors.cursor_color "#fabd2f" ]
+            [ programs.qutebrowser.settings.colors.statusbar.progress.bg "#fabd2f" ]
+            [ programs.sioyek.config.ui_selected_background_color "0.980392 0.741176 0.184314" ]
+            [ programs.imv.settings.options.background "1d2021" ]
+            [ programs.rio.settings.colors.tabs-active "#fabd2f" ]
             [ nixos.gruvbox.palette.accent "#8ec07c" ]
           ];
           bad = builtins.filter (e: builtins.elemAt e 0 != builtins.elemAt e 1) expect;

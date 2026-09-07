@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   home.username = "check";
   home.homeDirectory = "/home/check";
@@ -43,4 +45,15 @@
   wayland.windowManager.sway.enable = true;
   programs.hyprlock.enable = true;
   programs.swaylock.enable = true;
+
+  programs.vscode = { enable = true; package = pkgs.vscodium; };
+  programs.neovim.enable = true;
+  programs.zathura.enable = true;
+  programs.mpv.enable = true;
+  programs.k9s.enable = true;
+  programs.bottom.enable = true;
+  programs.qutebrowser.enable = true;
+  programs.sioyek.enable = true;
+  programs.imv.enable = true;
+  programs.rio.enable = true;
 }
