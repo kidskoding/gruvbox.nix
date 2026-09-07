@@ -38,4 +38,5 @@ rec {
   fg = c: "38;2;${c}";
   noHash = builtins.replaceStrings [ "#" ] [ "" ];
   hasOpt = path: lib.hasAttrByPath path options;
+  inherit (gl) hexToRgb;
 }
