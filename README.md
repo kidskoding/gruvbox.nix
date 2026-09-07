@@ -222,7 +222,9 @@ installs the program itself.
 | `foot`      | `programs.foot.settings.colors`                                      | `programs.foot.enable` |
 | `fuzzel`    | `programs.fuzzel.settings.colors`                                    | `programs.fuzzel.enable` |
 | `fzf`       | `programs.fzf.colors`                                                | `programs.fzf.enable` |
+| `gh-dash`   | `programs.gh-dash.settings.theme.colors`                             | `programs.gh-dash.enable` |
 | `ghostty`   | `programs.ghostty.settings`: background, foreground, cursor, selection, palette | `programs.ghostty.enable` |
+| `gitui`     | `programs.gitui.theme` (full ron theme)                              | `programs.gitui.enable` |
 | `gtk`       | `gtk.theme` Gruvbox-Dark/Light, `gtk.iconTheme` Gruvbox-Plus-Dark/Light, `gtk.colorScheme`, dconf `color-scheme` | nothing (sets `gtk.enable`) |
 | `helix`     | `programs.helix.settings.theme` from the six built-in gruvbox themes, flavor and contrast honored | `programs.helix.enable` |
 | `hyprland`  | `general.col.active_border` / `col.inactive_border`, `misc.background_color`, `decoration.shadow.color`, plus `$gruvbox_<key>` variables | `wayland.windowManager.hyprland.enable` |
@@ -231,30 +233,38 @@ installs the program itself.
 | `k9s`       | `programs.k9s.skins.gruvbox` (full skin) and `settings.k9s.ui.skin`  | `programs.k9s.enable` |
 | `kitty`     | `programs.kitty.settings`: colors, cursor, selection, borders, tabs  | `programs.kitty.enable` |
 | `lazygit`   | `programs.lazygit.settings.gui.theme`                                | `programs.lazygit.enable` |
+| `lsd`       | `programs.lsd.colors`: user, group, permissions, dates, sizes, git status | `programs.lsd.enable` |
 | `mako`      | `services.mako.settings`: background, text, border, progress, urgency sections | `services.mako.enable` |
+| `mangohud`  | `programs.mangohud.settings`: text, background and per-stat colors   | `programs.mangohud.enable` |
 | `mpv`       | `programs.mpv.config`: osd and subtitle colors                        | `programs.mpv.enable` |
 | `neovim`    | adds `vimPlugins.gruvbox-nvim`, sets background, contrast and colorscheme in `extraLuaConfig` | `programs.neovim.enable` |
 | `niri`      | `programs.niri.settings.layout`: background, active and inactive border, shadow | [niri-flake](https://github.com/sodiboo/niri-flake) module imported |
 | `noctalia`  | `programs.noctalia-shell.colors` (material slots) and `settings.colorSchemes` | [noctalia](https://github.com/noctalia-dev/noctalia) module imported |
+| `nushell`   | `$env.config.color_config` via `programs.nushell.extraConfig`         | `programs.nushell.enable` |
 | `qt`        | dark: qtct platform theme, kvantum style, Gruvbox-Dark-Brown kvantum theme. light: gtk platform theme | nothing (sets `qt.enable`) |
 | `qutebrowser` | `programs.qutebrowser.settings.colors`: completion, statusbar, tabs, hints, prompts, messages, downloads, context menu | `programs.qutebrowser.enable` |
 | `rio`       | `programs.rio.settings.colors`                                       | `programs.rio.enable` |
 | `rofi`      | `programs.rofi.theme`: global background/text/border, selected and urgent elements | `programs.rofi.enable` |
 | `sioyek`    | `programs.sioyek.config`: background, text, highlight, ui and status bar colors | `programs.sioyek.enable` |
+| `skim`      | `--color=...` in `programs.skim.defaultOptions`                      | `programs.skim.enable` |
+| `spotify-player` | a `gruvbox` entry in `programs.spotify-player.themes` and `settings.theme` | `programs.spotify-player.enable` |
 | `starship`  | `programs.starship.settings.palette = "gruvbox"` and `palettes.gruvbox` | `programs.starship.enable` |
 | `sway`      | `wayland.windowManager.sway.config.colors`: focused, focusedInactive, unfocused, urgent, placeholder, background | `wayland.windowManager.sway.enable` |
 | `swaylock`  | `programs.swaylock.settings`: ring, inside, key highlight, verify/wrong/clear states | `programs.swaylock.enable` |
 | `tmux`      | status bar, pane borders, messages, copy mode via `programs.tmux.extraConfig` | `programs.tmux.enable` |
+| `vivid`     | `programs.vivid.activeTheme` from the six built-in gruvbox themes, flavor and contrast honored | `programs.vivid.enable` |
 | `vscode`    | adds `vscode-extensions.jdinhlife.gruvbox` to the default profile and sets `workbench.colorTheme` by flavor and contrast | `programs.vscode.enable` |
 | `waybar`    | `@define-color gruvbox_<key>` for every palette key, prepended to `programs.waybar.style`, see [notes](#hyprlock-and-waybar) | `programs.waybar.enable` |
 | `wezterm`   | `programs.wezterm.colorSchemes.gruvbox` and `settings.color_scheme`  | `programs.wezterm.enable` |
 | `zathura`   | `programs.zathura.options`: page, statusbar, inputbar, completion, index, notification and recolor colors | `programs.zathura.enable` |
 | `zellij`    | `programs.zellij.settings.theme = "gruvbox-dark"` or `"gruvbox-light"` (built in) | `programs.zellij.enable` |
+| `zsh`       | `programs.zsh.syntaxHighlighting.styles`                             | `programs.zsh.syntaxHighlighting.enable` |
 
 ### NixOS modules
 
 | module             | sets                                                                     | needs |
 |--------------------|--------------------------------------------------------------------------|-------|
+| `console`          | `console.colors`: the 16 tty colors                                      | nothing |
 | `noctalia-greeter` | `programs.noctalia-greeter.settings.appearance`: `scheme = "Synced"`, `theme_mode`, full `palette` | [noctalia-greeter](https://github.com/noctalia-dev/noctalia-greeter) module imported |
 
 ### Module notes
@@ -277,10 +287,11 @@ Remove any `(setq doom-theme ...)` of your own. `gruvbox.el` picks
 `contrast`, and sets `mode-line` to `bg1`, `mode-line-inactive` to `bg`, and
 dired buffers to `bg0_h`.
 
-#### zellij, bat, btop
+#### zellij, bat, btop, vivid
 
-These ship gruvbox dark and light themes of their own, and the modules point at
-those by name. `contrast` has no effect on them.
+These ship gruvbox themes of their own, and the modules point at those by
+name. zellij, bat and btop only have dark and light, so `contrast` has no
+effect on them; vivid has all six variants.
 
 #### helix
 
